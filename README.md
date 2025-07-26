@@ -1,6 +1,6 @@
-# fake-tokens - Generate fake access tokens.  Created by 6mile.
+# fake-tokens - Generate fake access tokens
 
-![fake-tokens](faketokens-banner.png)
+![fake-tokens](images/faketokens-banner.png)
 
 Javascript CLI that generates fake access tokens for testing and development purposes.  Currently supports GitHub, GitLab and AWS tokens.
 
@@ -10,6 +10,8 @@ A Node.js script that generates fake authentication tokens for testing and devel
 ## Overview
 
 This tool creates realistic-looking but completely fake tokens that match the format of popular services. These tokens are intended for use in unit tests, development environments, and other scenarios where you need placeholder authentication data.
+
+There's a Python native version of this script as well.  You can read me about it [HERE](PYTHONREADME.md).
 
 **WARNING: All generated tokens are fake and cannot be used for actual authentication with any service.**
 

@@ -1,6 +1,6 @@
 # fake-tokens - Generate fake access tokens
 
-![fake-tokens](faketokens-banner.png)
+![fake-tokens](images/faketokens-banner.png)
 
 A python script that generates fake access tokens for testing and development purposes.  Currently supports GitHub, GitLab and AWS tokens.
 
