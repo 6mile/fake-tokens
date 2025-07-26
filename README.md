@@ -1,8 +1,11 @@
-# fake-tokens - Generate fake access tokens
+# fake-tokens - Generate fake access tokens.  Created by 6mile.
 
 ![fake-tokens](faketokens-banner.png)
 
-A python script that generates fake access tokens for testing and development purposes.  Currently supports GitHub, GitLab and AWS tokens.
+Javascript CLI that generates fake access tokens for testing and development purposes.  Currently supports GitHub, GitLab and AWS tokens.
+
+
+A Node.js script that generates fake authentication tokens for testing and development purposes.
 
 ## Overview
 
@@ -21,7 +24,12 @@ This tool creates realistic-looking but completely fake tokens that match the fo
 
 ## Installation
 
-No additional dependencies required beyond Python 3.6+. The script uses only standard library modules.
+Requires Node.js (version 12.0.0 or higher). No additional npm packages required - uses only built-in Node.js modules.
+
+```bash
+# Make the script executable (Unix-like systems)
+chmod +x faketokens.js
+```
 
 ## Usage
 
@@ -29,28 +37,28 @@ No additional dependencies required beyond Python 3.6+. The script uses only sta
 
 Generate a single GitHub classic token (default):
 ```bash
-python faketokens.py
+faketokens.js
 ```
 
 ### Specify Token Type
 
 Generate different types of tokens:
 ```bash
-python faketokens.py -t github_classic
-python faketokens.py -t github_fine_grained
-python faketokens.py -t gitlab
-python faketokens.py -t npm
-python faketokens.py -t aws_access_key
-python faketokens.py -t aws_secret_key
+faketokens.js -t github_classic
+faketokens.js -t github_fine_grained
+faketokens.js -t gitlab
+faketokens.js -t npm
+faketokens.js -t aws_access_key
+faketokens.js -t aws_secret_key
 ```
 
 ### Generate Multiple Tokens
 
 Generate multiple tokens of the same type:
 ```bash
-python faketokens.py -c 5                    # 5 GitHub classic tokens
-python faketokens.py -c 10 -t npm            # 10 NPM tokens
-python faketokens.py -c 3 -t aws_access_key  # 3 AWS access keys
+faketokens.js -c 5                    # 5 GitHub classic tokens
+faketokens.js -c 10 -t npm            # 10 NPM tokens
+faketokens.js -c 3 -t aws_access_key  # 3 AWS access keys
 ```
 
 ### Command Line Options
@@ -59,24 +67,30 @@ python faketokens.py -c 3 -t aws_access_key  # 3 AWS access keys
 - `-c, --count`: Number of tokens to generate (default: 1)
 - `-h, --help`: Show help message
 
+### Help
+
+```bash
+faketokens.js --help
+```
+
 ## Examples
 
 ### Generate AWS Credentials for Testing
 
 ```bash
 # Generate access key
-python faketokens.py -t aws_access_key
+faketokens.js -t aws_access_key
 # Output: AKIAIOSFODNN7EXAMPLE
 
 # Generate secret key
-python faketokens.py -t aws_secret_key
+faketokens.js -t aws_secret_key
 # Output: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 ```
 
 ### Generate Multiple GitHub Tokens
 
 ```bash
-python faketokens.py -c 3 -t github_classic
+faketokens.js -c 3 -t github_classic
 # Output:
 # ghp_1234567890abcdef1234567890abcdef12345678
 # ghp_abcdef1234567890abcdef1234567890abcdef12
@@ -88,10 +102,10 @@ python faketokens.py -c 3 -t github_classic
 ```bash
 #!/bin/bash
 # Generate test tokens for CI/CD pipeline
-GITHUB_TOKEN=$(python faketokens.py -t github_classic)
-NPM_TOKEN=$(python faketokens.py -t npm)
-AWS_ACCESS_KEY=$(python faketokens.py -t aws_access_key)
-AWS_SECRET_KEY=$(python faketokens.py -t aws_secret_key)
+GITHUB_TOKEN=$(node faketokens.js -t github_classic)
+NPM_TOKEN=$(node faketokens.js -t npm)
+AWS_ACCESS_KEY=$(node faketokens.js -t aws_access_key)
+AWS_SECRET_KEY=$(node faketokens.js -t aws_secret_key)
 
 echo "GITHUB_TOKEN=$GITHUB_TOKEN" >> .env.test
 echo "NPM_TOKEN=$NPM_TOKEN" >> .env.test
@@ -101,54 +115,125 @@ echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY" >> .env.test
 
 ## Use Cases
 
-### Unit Testing
+### Unit Testing with Jest
 
-```python
-import subprocess
+```javascript
+const { execSync } = require('child_process');
 
-def get_fake_token(token_type):
-    result = subprocess.run(
-        ['python', 'faketokens.py', '-t', token_type], 
-        capture_output=True, 
-        text=True
-    )
-    return result.stdout.strip()
+function getFakeToken(tokenType) {
+    const result = execSync(`node faketokens.js -t ${tokenType}`, { encoding: 'utf8' });
+    return result.trim();
+}
 
-# In your tests
-def test_github_api_client():
-    fake_token = get_fake_token('github_classic')
-    client = GitHubClient(token=fake_token)
-    # Test your client with the fake token
+// In your tests
+describe('GitHub API Client', () => {
+    test('should handle authentication', () => {
+        const fakeToken = getFakeToken('github_classic');
+        const client = new GitHubClient(fakeToken);
+        // Test your client with the fake token
+    });
+});
 ```
 
-### Mock Environment Variables
+### Using as a Node.js Module
 
-```bash
-# Set up test environment
-export GITHUB_TOKEN=$(python faketokens.py -t github_classic)
-export NPM_TOKEN=$(python faketokens.py -t npm)
-export AWS_ACCESS_KEY_ID=$(python faketokens.py -t aws_access_key)
-export AWS_SECRET_ACCESS_KEY=$(python faketokens.py -t aws_secret_key)
+```javascript
+const TestTokenGenerator = require('./faketokens.js');
 
-# Run your tests
-python -m pytest tests/
+const generator = new TestTokenGenerator();
+
+// Generate single tokens
+const githubToken = generator.generateGitHubClassicToken();
+const npmToken = generator.generateNpmToken();
+const awsAccessKey = generator.generateAwsAccessKey();
+
+// Generate multiple tokens
+const multipleTokens = generator.generateBatch(5, 'github_classic');
+
+console.log('GitHub Token:', githubToken);
+console.log('NPM Token:', npmToken);
+console.log('AWS Access Key:', awsAccessKey);
+console.log('Multiple Tokens:', multipleTokens);
 ```
 
-### Development Configuration
+### Package.json Scripts
 
-```yaml
-# docker-compose.yml
-version: '3.8'
-services:
-  app:
-    environment:
-      - GITHUB_TOKEN=ghp_fake123456789abcdef123456789abcdef12
-      - NPM_TOKEN=npm_fake123456789abcdef123456789abcdef12
+```json
+{
+  "scripts": {
+    "generate-test-tokens": "node faketokens.js -c 5 -t github_classic",
+    "setup-test-env": "node -e \"console.log('GITHUB_TOKEN=' + require('child_process').execSync('node faketokens.js -t github_classic', {encoding: 'utf8'}).trim())\" >> .env.test"
+  }
+}
 ```
+
+### Express.js Middleware Testing
+
+```javascript
+const TestTokenGenerator = require('./faketokens.js');
+
+describe('Auth Middleware', () => {
+    let generator;
+    
+    beforeEach(() => {
+        generator = new TestTokenGenerator();
+    });
+    
+    test('should validate GitHub token format', () => {
+        const fakeToken = generator.generateGitHubClassicToken();
+        const req = { headers: { authorization: `Bearer ${fakeToken}` } };
+        
+        // Test your middleware
+        expect(authMiddleware.validateTokenFormat(req)).toBe(true);
+    });
+});
+```
+# Generate tokens during build
+RUN echo "GITHUB_TOKEN=$(node /usr/local/bin/faketokens.js -t github_classic)" >> /app/.env.test
+```
+
+## API Reference
+
+### Class: TestTokenGenerator
+
+#### Constructor
+```javascript
+const generator = new TestTokenGenerator();
+```
+
+#### Methods
+
+##### generateGitHubClassicToken(ensureUnique = true)
+Returns a fake GitHub classic token starting with `ghp_`.
+
+##### generateGitHubFineGrainedToken(length = 93, ensureUnique = true)
+Returns a fake GitHub fine-grained token starting with `github_pat_`.
+
+##### generateGitLabToken(ensureUnique = true)
+Returns a fake GitLab token starting with `glpat-`.
+
+##### generateNpmToken(ensureUnique = true)
+Returns a fake NPM token starting with `npm_`.
+
+##### generateAwsAccessKey(ensureUnique = true)
+Returns a fake AWS access key starting with `AKIA`.
+
+##### generateAwsSecretKey(ensureUnique = true)
+Returns a fake AWS secret key (40 characters).
+
+##### generateBatch(count, tokenType = "github_classic")
+Returns an array of fake tokens of the specified type.
+
+##### clearHistory()
+Clears the history of generated tokens.
+
+##### getGeneratedCount()
+Returns the number of unique tokens generated.
 
 ## Security Notes
 
 - All tokens generated by this script are completely fake
+- Uses Node.js `crypto.randomInt()` for cryptographically secure random generation
 - Do not use these tokens for actual authentication
 - The tokens follow realistic formats but contain no real credentials
 - Safe to commit to version control in test configurations
@@ -164,4 +249,36 @@ services:
 ### GitHub Fine-grained Tokens
 - Format: `github_pat_` + variable length alphanumeric string
 - Default length: 93 characters total
-- Character set: a-z, A
+- Character set: a-z, A-Z, 0-9
+
+### GitLab Tokens
+- Format: `glpat-` + 20 alphanumeric characters
+- Total length: 26 characters
+- Character set: a-z, A-Z, 0-9
+
+### NPM Tokens
+- Format: `npm_` + 36 characters
+- Total length: 40 characters
+- Character set: a-z, A-Z, 0-9, _, -
+
+### AWS Access Keys
+- Format: `AKIA` + 16 uppercase alphanumeric characters
+- Total length: 20 characters
+- Character set: A-Z, 0-9
+
+### AWS Secret Keys
+- Format: 40-character base64-like string
+- Character set: a-z, A-Z, 0-9, +, /
+
+## Requirements
+
+- Node.js 12.0.0 or higher
+- No external dependencies (uses only built-in Node.js modules)
+
+## Contributing
+
+Feel free to submit issues or pull requests to add support for additional token formats or improve existing functionality.
+
+## License
+
+This script is provided as-is for testing and development purposes. Use responsibly and never for actual authentication.
