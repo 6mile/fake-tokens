@@ -1,6 +1,6 @@
 # fake-tokens - Generate fake access tokens
 
-![fake-tokens](images/faketokens-banner.png)
+![fake-tokens](images/faketokens-banner-smaller.png)
 
 Javascript CLI that generates fake access tokens for testing and development purposes.  Currently supports GitHub, GitLab and AWS tokens.
 
