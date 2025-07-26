@@ -1,4 +1,4 @@
-# fake-tokens
+# fake-tokens - Generate fake access tokens
 
 ![fake-tokens](faketokens-banner.png)
 
