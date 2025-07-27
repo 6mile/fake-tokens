@@ -34,6 +34,14 @@ Requires Node.js (version 12.0.0 or higher). No additional npm packages required
 chmod +x fake-tokens.js
 ```
 
+### NPM package
+
+fake-tokens is also available as an NPM package:
+
+```bash
+npm install fake-tokens
+```
+
 ## Usage
 
 ### Basic Usage
