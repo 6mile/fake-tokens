@@ -2,10 +2,11 @@
 
 ![fake-tokens](images/fake-tokens-banner-smaller.png)
 
-Javascript CLI that generates fake access tokens for testing and development purposes.  Currently supports GitHub, GitLab and AWS tokens.
+Have you ever needed fake GitHub, NPM, GitLab or AWS credentials for testing?  I did, but when I went looking for a library to use, I couldn't find any, so I wrote my own.
 
+fake-tokens is a Javascript library and CLI that generates fake access tokens for testing and development purposes.  fake-tokens currently supports GitHub, NPM, GitLab and AWS tokens.  These tokens are intended for use in unit tests, development environments, and other scenarios where you need placeholder authentication data.  You can import the library and use it in your project, or you can run it as a CLI tool. 
 
-A Node.js script that generates fake authentication tokens for testing and development purposes.
+I've published this as an NPM package which you can find at [https://www.npmjs.com/package/fake-tokens](https://www.npmjs.com/package/fake-tokens)
 
 ## Overview
 
