@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Test Token Generator
+ * fake-tokens
  * 
  * Generates fake tokens for testing and development purposes.
  * These tokens are NOT real and cannot be used for actual authentication.

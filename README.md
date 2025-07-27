@@ -2,7 +2,7 @@
 
 ![fake-tokens](images/fake-tokens-banner-smaller.png)
 
-Have you ever needed fake GitHub, NPM, GitLab or AWS credentials for testing?  I did, but when I went looking for a library to use, I couldn't find any, so I wrote my own.
+Have you ever needed fake GitHub, NPM, GitLab or AWS credentials for testing purposes?  Well, I did, but when I went looking for a library to use, I couldn't find any, so I wrote my own.
 
 fake-tokens is a Javascript library and CLI that generates fake access tokens for testing and development purposes.  fake-tokens currently supports GitHub, NPM, GitLab and AWS tokens.  These tokens are intended for use in unit tests, development environments, and other scenarios where you need placeholder authentication data.  You can import the library and use it in your project, or you can run it as a CLI tool. 
 
@@ -31,7 +31,7 @@ Requires Node.js (version 12.0.0 or higher). No additional npm packages required
 
 ```bash
 # Make the script executable (Unix-like systems)
-chmod +x faketokens.js
+chmod +x fake-tokens.js
 ```
 
 ## Usage
@@ -40,28 +40,28 @@ chmod +x faketokens.js
 
 Generate a single GitHub classic token (default):
 ```bash
-faketokens.js
+fake-tokens.js
 ```
 
 ### Specify Token Type
 
 Generate different types of tokens:
 ```bash
-faketokens.js -t github_classic
-faketokens.js -t github_fine_grained
-faketokens.js -t gitlab
-faketokens.js -t npm
-faketokens.js -t aws_access_key
-faketokens.js -t aws_secret_key
+fake-tokens.js -t github_classic
+fake-tokens.js -t github_fine_grained
+fake-tokens.js -t gitlab
+fake-tokens.js -t npm
+fake-tokens.js -t aws_access_key
+fake-tokens.js -t aws_secret_key
 ```
 
 ### Generate Multiple Tokens
 
 Generate multiple tokens of the same type:
 ```bash
-faketokens.js -c 5                    # 5 GitHub classic tokens
-faketokens.js -c 10 -t npm            # 10 NPM tokens
-faketokens.js -c 3 -t aws_access_key  # 3 AWS access keys
+fake-tokens.js -c 5                    # 5 GitHub classic tokens
+fake-tokens.js -c 10 -t npm            # 10 NPM tokens
+fake-tokens.js -c 3 -t aws_access_key  # 3 AWS access keys
 ```
 
 ### Command Line Options
@@ -73,7 +73,7 @@ faketokens.js -c 3 -t aws_access_key  # 3 AWS access keys
 ### Help
 
 ```bash
-faketokens.js --help
+fake-tokens.js --help
 ```
 
 ## Examples
@@ -82,18 +82,18 @@ faketokens.js --help
 
 ```bash
 # Generate access key
-faketokens.js -t aws_access_key
+fake-tokens.js -t aws_access_key
 # Output: AKIAIOSFODNN7EXAMPLE
 
 # Generate secret key
-faketokens.js -t aws_secret_key
+fake-tokens.js -t aws_secret_key
 # Output: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 ```
 
 ### Generate Multiple GitHub Tokens
 
 ```bash
-faketokens.js -c 3 -t github_classic
+fake-tokens.js -c 3 -t github_classic
 # Output:
 # ghp_1234567890abcdef1234567890abcdef12345678
 # ghp_abcdef1234567890abcdef1234567890abcdef12
@@ -105,10 +105,10 @@ faketokens.js -c 3 -t github_classic
 ```bash
 #!/bin/bash
 # Generate test tokens for CI/CD pipeline
-GITHUB_TOKEN=$(node faketokens.js -t github_classic)
-NPM_TOKEN=$(node faketokens.js -t npm)
-AWS_ACCESS_KEY=$(node faketokens.js -t aws_access_key)
-AWS_SECRET_KEY=$(node faketokens.js -t aws_secret_key)
+GITHUB_TOKEN=$(node fake-tokens.js -t github_classic)
+NPM_TOKEN=$(node fake-tokens.js -t npm)
+AWS_ACCESS_KEY=$(node fake-tokens.js -t aws_access_key)
+AWS_SECRET_KEY=$(node fake-tokens.js -t aws_secret_key)
 
 echo "GITHUB_TOKEN=$GITHUB_TOKEN" >> .env.test
 echo "NPM_TOKEN=$NPM_TOKEN" >> .env.test
@@ -124,7 +124,7 @@ echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY" >> .env.test
 const { execSync } = require('child_process');
 
 function getFakeToken(tokenType) {
-    const result = execSync(`node faketokens.js -t ${tokenType}`, { encoding: 'utf8' });
+    const result = execSync(`node fake-tokens.js -t ${tokenType}`, { encoding: 'utf8' });
     return result.trim();
 }
 
@@ -141,7 +141,7 @@ describe('GitHub API Client', () => {
 ### Using as a Node.js Module
 
 ```javascript
-const TestTokenGenerator = require('./faketokens.js');
+const TestTokenGenerator = require('./fake-tokens.js');
 
 const generator = new TestTokenGenerator();
 
@@ -164,8 +164,8 @@ console.log('Multiple Tokens:', multipleTokens);
 ```json
 {
   "scripts": {
-    "generate-test-tokens": "node faketokens.js -c 5 -t github_classic",
-    "setup-test-env": "node -e \"console.log('GITHUB_TOKEN=' + require('child_process').execSync('node faketokens.js -t github_classic', {encoding: 'utf8'}).trim())\" >> .env.test"
+    "generate-test-tokens": "node fake-tokens.js -c 5 -t github_classic",
+    "setup-test-env": "node -e \"console.log('GITHUB_TOKEN=' + require('child_process').execSync('node fake-tokens.js -t github_classic', {encoding: 'utf8'}).trim())\" >> .env.test"
   }
 }
 ```
@@ -173,7 +173,7 @@ console.log('Multiple Tokens:', multipleTokens);
 ### Express.js Middleware Testing
 
 ```javascript
-const TestTokenGenerator = require('./faketokens.js');
+const TestTokenGenerator = require('./fake-tokens.js');
 
 describe('Auth Middleware', () => {
     let generator;
@@ -192,7 +192,7 @@ describe('Auth Middleware', () => {
 });
 ```
 # Generate tokens during build
-RUN echo "GITHUB_TOKEN=$(node /usr/local/bin/faketokens.js -t github_classic)" >> /app/.env.test
+RUN echo "GITHUB_TOKEN=$(node /usr/local/bin/fake-tokens.js -t github_classic)" >> /app/.env.test
 ```
 
 ## API Reference

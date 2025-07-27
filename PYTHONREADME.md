@@ -2,7 +2,7 @@
 
 ![fake-tokens](images/fake-tokens-banner-smaller.png)
 
-A python script that generates fake access tokens for testing and development purposes.  Currently supports GitHub, GitLab and AWS tokens.
+A python script that generates fake access tokens for testing and development purposes.  Currently supports GitHub, GitLab, NPM and AWS tokens.
 
 ## Overview
 
@@ -29,28 +29,28 @@ No additional dependencies required beyond Python 3.6+. The script uses only sta
 
 Generate a single GitHub classic token (default):
 ```bash
-python faketokens.py
+python fake-tokens.py
 ```
 
 ### Specify Token Type
 
 Generate different types of tokens:
 ```bash
-python faketokens.py -t github_classic
-python faketokens.py -t github_fine_grained
-python faketokens.py -t gitlab
-python faketokens.py -t npm
-python faketokens.py -t aws_access_key
-python faketokens.py -t aws_secret_key
+python fake-tokens.py -t github_classic
+python fake-tokens.py -t github_fine_grained
+python fake-tokens.py -t gitlab
+python fake-tokens.py -t npm
+python fake-tokens.py -t aws_access_key
+python fake-tokens.py -t aws_secret_key
 ```
 
 ### Generate Multiple Tokens
 
 Generate multiple tokens of the same type:
 ```bash
-python faketokens.py -c 5                    # 5 GitHub classic tokens
-python faketokens.py -c 10 -t npm            # 10 NPM tokens
-python faketokens.py -c 3 -t aws_access_key  # 3 AWS access keys
+python fake-tokens.py -c 5                    # 5 GitHub classic tokens
+python fake-tokens.py -c 10 -t npm            # 10 NPM tokens
+python fake-tokens.py -c 3 -t aws_access_key  # 3 AWS access keys
 ```
 
 ### Command Line Options
@@ -65,18 +65,18 @@ python faketokens.py -c 3 -t aws_access_key  # 3 AWS access keys
 
 ```bash
 # Generate access key
-python faketokens.py -t aws_access_key
+python fake-tokens.py -t aws_access_key
 # Output: AKIAIOSFODNN7EXAMPLE
 
 # Generate secret key
-python faketokens.py -t aws_secret_key
+python fake-tokens.py -t aws_secret_key
 # Output: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 ```
 
 ### Generate Multiple GitHub Tokens
 
 ```bash
-python faketokens.py -c 3 -t github_classic
+python fake-tokens.py -c 3 -t github_classic
 # Output:
 # ghp_1234567890abcdef1234567890abcdef12345678
 # ghp_abcdef1234567890abcdef1234567890abcdef12
@@ -88,10 +88,10 @@ python faketokens.py -c 3 -t github_classic
 ```bash
 #!/bin/bash
 # Generate test tokens for CI/CD pipeline
-GITHUB_TOKEN=$(python faketokens.py -t github_classic)
-NPM_TOKEN=$(python faketokens.py -t npm)
-AWS_ACCESS_KEY=$(python faketokens.py -t aws_access_key)
-AWS_SECRET_KEY=$(python faketokens.py -t aws_secret_key)
+GITHUB_TOKEN=$(python fake-tokens.py -t github_classic)
+NPM_TOKEN=$(python fake-tokens.py -t npm)
+AWS_ACCESS_KEY=$(python fake-tokens.py -t aws_access_key)
+AWS_SECRET_KEY=$(python fake-tokens.py -t aws_secret_key)
 
 echo "GITHUB_TOKEN=$GITHUB_TOKEN" >> .env.test
 echo "NPM_TOKEN=$NPM_TOKEN" >> .env.test
@@ -108,7 +108,7 @@ import subprocess
 
 def get_fake_token(token_type):
     result = subprocess.run(
-        ['python', 'faketokens.py', '-t', token_type], 
+        ['python', 'fake-tokens.py', '-t', token_type], 
         capture_output=True, 
         text=True
     )
@@ -125,10 +125,10 @@ def test_github_api_client():
 
 ```bash
 # Set up test environment
-export GITHUB_TOKEN=$(python faketokens.py -t github_classic)
-export NPM_TOKEN=$(python faketokens.py -t npm)
-export AWS_ACCESS_KEY_ID=$(python faketokens.py -t aws_access_key)
-export AWS_SECRET_ACCESS_KEY=$(python faketokens.py -t aws_secret_key)
+export GITHUB_TOKEN=$(python fake-tokens.py -t github_classic)
+export NPM_TOKEN=$(python fake-tokens.py -t npm)
+export AWS_ACCESS_KEY_ID=$(python fake-tokens.py -t aws_access_key)
+export AWS_SECRET_ACCESS_KEY=$(python fake-tokens.py -t aws_secret_key)
 
 # Run your tests
 python -m pytest tests/
